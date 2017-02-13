@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>modelProxy 测试</title>
+</head>
+
+<body>
+
+    <button id="config">
+        CONFIG
+    </button>
+
+    <button id="login">
+        LOGIN
+    </button>
+
+    <select id="engine">
+        <option value="mockjs">mockjs</option>
+        <option value="jquery">jquery</option>
+    </select>
+
+    <script src="./node_modules/jquery/dist/jquery.js"></script>
+    <script src="./node_modules/lodash/lodash.js"></script>
+    <script src="./node_modules/tv4/tv4.js"></script>
+    <script src="./node_modules/bluebird/js/browser/bluebird.js"></script>
+    <script src="./node_modules/modelproxy/dist/web.js"></script>
+    <script src="./node_modules/mockjs/dist/mock.js"></script>
+    <script src="./node_modules/node-serialize/lib/serialize.js"></script>
+    <script src="./node_modules/modelproxy-engine-jquery/dist/index.js"></script>
+    <script src="./node_modules/modelproxy-engine-mockjs/dist/web.js"></script>
+
+    <script>
+        var proxy = new modelProxy.modelProxy.Proxy();
+
+        var jqueryEngine = new JqueryEngine();
+
+        proxy.addEngines({
+            jquery: jqueryEngine,
+            mockjs: new MockEngine(jqueryEngine)
+        });
+
+        $.get("/config").then(function(data) {
+            proxy.loadConfig(data);
+        });
+
+        $("#login").on("click", function() {
+            let local = proxy.getNs("localhost");
+
+            local.login({
+                params: {
+                    a: 1
+                },
+                data: {
+                    username: "nick",
+                    password: "111111"
+                },
+                instance: {
+                    engine: $("#engine").val()
+                },
+                settings: {
+                    dataType: "json"
+                }
+            }).then(function(result) {
+                console.log(result);
+            });
+
+            return false;
+        });
+
+        $("#config").on("click", function() {
+            let local = proxy.getNs("localhost");
+
+            local.config({
+                params: {
+                    a: 1
+                },
+                data: {
+                    username: "nick",
+                    password: "111111"
+                },
+                instance: {
+                    engine: $("#engine").val()
+                },
+            }).then(function(result) {
+                console.log(result);
+            });
+
+            return false;
+        });
+
+        console.log(proxy);
+    </script>
+</body>
+
+</html>
