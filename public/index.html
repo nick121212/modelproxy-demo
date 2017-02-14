@@ -15,6 +15,10 @@
         LOGIN
     </button>
 
+    <button id="test-server">
+        test-server
+    </button>
+
     <select id="engine">
         <option value="mockjs">mockjs</option>
         <option value="jquery">jquery</option>
@@ -24,6 +28,7 @@
     <script src="./node_modules/lodash/lodash.js"></script>
     <script src="./node_modules/tv4/tv4.js"></script>
     <script src="./node_modules/bluebird/js/browser/bluebird.js"></script>
+    <script src="./node_modules/json-pointer-umd/index.js"></script>
     <script src="./node_modules/modelproxy/dist/web.js"></script>
     <script src="./node_modules/mockjs/dist/mock.js"></script>
     <script src="./node_modules/node-serialize/lib/serialize.js"></script>
@@ -32,7 +37,6 @@
 
     <script>
         var proxy = new modelProxy.modelProxy.Proxy();
-
         var jqueryEngine = new JqueryEngine();
 
         proxy.addEngines({
@@ -52,8 +56,8 @@
                     a: 1
                 },
                 data: {
-                    username: "nick",
-                    password: "111111"
+                    // username: "",
+                    password: "1111"
                 },
                 instance: {
                     engine: $("#engine").val()
@@ -61,6 +65,29 @@
                 settings: {
                     dataType: "json"
                 }
+            }).then(function(result) {
+                console.log(result);
+            }).catch(function(error) {
+                console.error(error, error instanceof modelProxy.modelProxy.errors.ModelProxyValidaterError);
+            });
+
+            return false;
+        });
+
+        $("#test-server").on("click", function() {
+            let local = proxy.getNs("localhost");
+
+            local['test-server']({
+                params: {
+                    a: 1
+                },
+                data: {
+                    username: "nick",
+                    password: "111111"
+                },
+                instance: {
+                    engine: $("#engine").val()
+                },
             }).then(function(result) {
                 console.log(result);
             });
@@ -88,8 +115,6 @@
 
             return false;
         });
-
-        console.log(proxy);
     </script>
 </body>
 

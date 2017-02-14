@@ -26,9 +26,29 @@
         "method": "GET",
         "path": "/test"
     }, {
+        "key": "test-server",
+        "title": "获取测试数据",
+        "method": "GET",
+        "path": "/test/server"
+    }, {
         "key": "login",
         "title": "测试登陆，返回数据",
         "method": "POST",
-        "path": "/login"
+        "path": "/login",
+        "dataSchema": {
+            "type": "object",
+            "required": ["username", "password"],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 4
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                }
+            }
+        }
     }]
 }
