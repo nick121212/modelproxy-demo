@@ -8,12 +8,12 @@ var serialize = require('node-serialize');
 var modelproxy = require("modelproxy").modelProxy;
 var mockjsEngine = require("modelproxy-engine-mockjs").MockEngine;
 
+global.Promise = require("bluebird");
+
 // 服务端使用modleproxy，这里只是用了mockjs的engine
 var proxy = new modelproxy.Proxy();
 var engine = function() {}
-engine.prototype.valivate = function() {
-    return true;
-}
+
 engine.prototype.proxy = function(instance, options) {
     return require("./public/mock/" + instance.ns + "/" + instance.key);
 };
@@ -57,18 +57,21 @@ app.get('/mockInfo', function(req, res) {
 
     if (query.path) {
         var info = require("./public/mock/" + query.path);
-
-        return res.json(serialize.serialize(info));
+        var infoStr = JSON.stringify(info, function(key, val) {
+            if (typeof val === 'function') {
+                return val.toString().replace(/\n/ig, '');
+            }
+            return val;
+        });
+        return res.send(infoStr);
     }
 
     res.error(new Error("没有path"));
-
-    res.json();
 });
 
 app.get("/test/server", function(req, res) {
     // 使用mockjs来返回数据
-    proxy.execute("/localhost/login", { data: { username: "", password: "111111" }, instance: { engine: "mockjs" } }).then(function(result) {
+    proxy.execute("/localhost/test-server", { data: { username: "", password: "111111" }, instance: { engine: "mockjs" } }).then(function(result) {
         res.json(result);
     }).catch(function(err) {
         res.json(err);

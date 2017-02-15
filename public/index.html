@@ -38,10 +38,27 @@
     <script>
         var proxy = new modelProxy.modelProxy.Proxy();
         var jqueryEngine = new JqueryEngine();
+        var mockEngine = new MockEngine(jqueryEngine);
+
+        mockEngine.use(function(ctx, next) {
+            if (typeof ctx.result === "string") {
+                ctx.result = JSON.parse(ctx.result, function(k, v) {
+                    if (v.indexOf && v.indexOf('function') > -1) {
+                        return eval("(function(){return " + v + " })()")
+                    }
+                    return v;
+                });
+            }
+            next();
+
+            return new Promise(function() {
+
+            });
+        });
 
         proxy.addEngines({
             jquery: jqueryEngine,
-            mockjs: new MockEngine(jqueryEngine)
+            mockjs: mockEngine
         });
 
         $.get("/config").then(function(data) {

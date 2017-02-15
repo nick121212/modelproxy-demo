@@ -16,7 +16,7 @@
         "mockjs": "^1.0.1-beta3",
         "modelproxy": "^0.3.0",
         "modelproxy-engine-jquery": "^0.1.2",
-        "modelproxy-engine-mockjs": "^0.1.3",
+        "modelproxy-engine-mockjs": "^0.2.1",
         "node-serialize": "0.0.4",
         "tv4": "^1.2.7"
     }
