@@ -46,7 +46,7 @@ app.get('/mockInfo', function(req, res) {
     res.error(new Error("没有path"));
 });
 
-app.listen(3003, function() {
+app.listen(3000, function() {
     console.log('listen on port 3003');
 });
 
