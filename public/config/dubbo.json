@@ -1,0 +1,67 @@
+{
+    "key": "dubbo",
+    "title": "本地的服务",
+    "engine": "dubbo",
+    "mockDir": "",
+    "states": {
+        "prod": "http://localhost:3000",
+        "test": "http://localhost:3000",
+        "dev": "http://localhost:3000",
+        "stag": "http://localhost:3000"
+    },
+    "state": "dev",
+    "interfaces": [{
+        "key": "insertBookingOrder",
+        "title": "插入一条预定信息数据",
+        "method": "",
+        "path": "",
+        "config": {
+            "method": "insertBookingOrder",
+            "dataAdapter": {
+                "class": "com.chinaredstar.fc.api.param.broker.OrderParam",
+                "data": {
+                    "roomId": "/$/roomId",
+                    "contactPhone": "/$/contactPhone",
+                    "userPhone": "/$/userPhone",
+                    "bookingNumber": "/$/bookingNumber",
+                    "status": "/$/status",
+                    "memo": "/$/memo",
+                    "contactor": "/$/contactor",
+                    "userName": "/$/userName",
+                    "consultantOpenId": "/$/consultantOpenId",
+                    "userOpenId": "/$/userOpenId"
+                }
+            },
+            "application": {
+                "name": "modelproxy-dubbo-test",
+                "dInterface": {
+                    "alias": "IBookingOrderService:1.0.2",
+                    "name": "com.chinaredstar.fc.api.service.broker.IBookingOrderService",
+                    "version": "1.0.2"
+                }
+            }
+        }
+    }, {
+        "key": "getHouseById",
+        "title": "通过ID获取房产信息",
+        "method": "",
+        "path": "",
+        "config": {
+            "method": "getHouseById",
+            "dataAdapter": {
+                "class": "java.lang.Integer",
+                "data": {
+                    "id": "/$"
+                }
+            },
+            "application": {
+                "name": "modelproxy-dubbo-test",
+                "dInterface": {
+                    "alias": "IHouseService:1.0.2",
+                    "name": "com.chinaredstar.fc.api.service.house.IHouseService",
+                    "version": "1.0.2"
+                }
+            }
+        }
+    }]
+}

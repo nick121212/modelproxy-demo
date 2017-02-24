@@ -5,18 +5,18 @@
     <title>modelProxy 测试</title>
 </head>
 
-<body>
+<body style="padding:100px;font-size:40px;">
 
     <button id="config">
-        CONFIG
+        CONFIG接口
     </button>
 
     <button id="login">
-        LOGIN
+        LOGIN接口
     </button>
 
-    <button id="test-server">
-        test-server
+    <button id="combination">
+        combination接口
     </button>
 
     <select id="engine">
@@ -34,12 +34,17 @@
     <script src="./node_modules/node-serialize/lib/serialize.js"></script>
     <script src="./node_modules/modelproxy-engine-jquery/dist/index.js"></script>
     <script src="./node_modules/modelproxy-engine-mockjs/dist/web.js"></script>
+    <script src="./node_modules/zone.js/dist/zone.js"></script>
+    <script src="./node_modules/zone.js/dist/long-stack-trace-zone.js"></script>
 
     <script>
         var proxy = new modelProxy.modelProxy.Proxy();
         var jqueryEngine = new JqueryEngine();
         var mockEngine = new MockEngine(jqueryEngine);
 
+        /** 
+         * 返回的json数据中带有function，这里需要特殊处理下
+         */
         mockEngine.use(function(ctx, next) {
             if (typeof ctx.result === "string") {
                 ctx.result = JSON.parse(ctx.result, function(k, v) {
@@ -51,83 +56,95 @@
             }
             next();
 
-            return new Promise(function() {
-
-            });
+            return new Promise(function() {});
         });
 
+        // 添加engines
         proxy.addEngines({
             jquery: jqueryEngine,
             mockjs: mockEngine
         });
 
+        /** 
+         *  从服务器端获取接口的配置文件信息，初始化proxy
+         */
         $.get("/config").then(function(data) {
             proxy.loadConfig(data);
         });
 
+        /**
+         * 绑定事件
+         */
         $("#login").on("click", function() {
-            let local = proxy.getNs("localhost");
-
-            local.login({
-                params: {
-                    a: 1
-                },
-                data: {
-                    // username: "",
-                    password: "1111"
-                },
-                instance: {
-                    engine: $("#engine").val()
-                },
-                settings: {
-                    dataType: "json"
+            Zone.current.fork({
+                onHandleError: function(parentZoneDelegate, currentZone, targetZone, error) {
+                    console.log(error.stack);
                 }
-            }).then(function(result) {
-                console.log(result);
-            }).catch(function(error) {
-                console.error(error, error instanceof modelProxy.modelProxy.errors.ModelProxyValidaterError);
+            }).fork(Zone.longStackTraceZoneSpec).run(function() {
+                proxy.execute('/localhost/login', {
+                    params: {
+                        a: 1
+                    },
+                    data: {
+                        username: "nick12",
+                        password: "1133311"
+                    },
+                    instance: {
+                        engine: $("#engine").val()
+                    },
+                    settings: {
+                        dataType: "json"
+                    }
+                }).then(console.log);
             });
 
             return false;
         });
 
-        $("#test-server").on("click", function() {
-            let local = proxy.getNs("localhost");
+        $("#combination").on("click", function() {
+            Zone.current.fork({
+                onHandleError: function(parentZoneDelegate, currentZone, targetZone, error) {
+                    console.log(error.stack);
+                }
+            }).fork(Zone.longStackTraceZoneSpec).run(function() {
+                proxy.execute('/localhost/combination', {
+                    params: {
+                        id: 155602
+                    },
+                    data: {
 
-            local['test-server']({
-                params: {
-                    a: 1
-                },
-                data: {
-                    username: "nick",
-                    password: "111111"
-                },
-                instance: {
-                    engine: $("#engine").val()
-                },
-            }).then(function(result) {
-                console.log(result);
+                    },
+                    instance: {
+                        engine: $("#engine").val()
+                    },
+                }).then(function(result) {
+                    console.log(result);
+                }).catch(console.error);
             });
 
             return false;
         });
 
         $("#config").on("click", function() {
-            let local = proxy.getNs("localhost");
-
-            local.config({
-                params: {
-                    a: 1
-                },
-                data: {
-                    username: "nick",
-                    password: "111111"
-                },
-                instance: {
-                    engine: $("#engine").val()
-                },
-            }).then(function(result) {
-                console.log(result);
+            Zone.current.fork({
+                onHandleError: function(parentZoneDelegate, currentZone, targetZone, error) {
+                    console.log(error.stack);
+                }
+            }).fork(Zone.longStackTraceZoneSpec).run(function() {
+                proxy.execute('/localhost/config', {
+                    params: {
+                        a: 1
+                    },
+                    data: {
+                        username: "nick",
+                        password: "111111"
+                    },
+                    instance: {
+                        engine: $("#engine").val()
+                    }
+                }).then(function(result) {
+                    console.log(result);
+                }).catch(console.error);
             });
 
             return false;

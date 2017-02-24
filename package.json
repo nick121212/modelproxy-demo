@@ -1,22 +1,31 @@
 {
-    "name": "modelproxy-demo",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "dependencies": {
-        "bluebird": "^3.4.7",
-        "body-parser": "^1.16.0",
-        "jquery": "^3.1.1",
-        "lodash": "^4.17.4",
-        "modelproxy": "^0.3.2",
-        "modelproxy-engine-mockjs": "^0.2.1",
-        "node-serialize": "0.0.4",
-        "tv4": "^1.2.7"
-    },
-    "devDependencies": {},
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC"
+  "name": "modelproxy-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.16.0",
+    "dubbo-node-client": "0.0.2",
+    "helmet": "^3.4.0",
+    "jquery": "^3.1.1",
+    "lodash": "^4.17.4",
+    "modelproxy": "^0.3.2",
+    "modelproxy-engine-dubbo": "^0.2.3",
+    "modelproxy-engine-mockjs": "^0.2.1",
+    "node-jsonrpc-dubbo": "git+https://github.com/hufeng/node-jsonrpc-dubbo.git",
+    "node-serialize": "0.0.4",
+    "node-zookeeper-client": "^0.2.2",
+    "node-zookeeper-dubbo": "^2.1.7",
+    "tv4": "^1.2.7",
+    "zone": "^0.3.4",
+    "zone.js": "^0.7.7",
+    "zoodubbo": "^0.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }

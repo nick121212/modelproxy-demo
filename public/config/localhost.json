@@ -4,32 +4,22 @@
     "engine": "default",
     "mockDir": "/mockInfo",
     "states": {
-        "prod": "http://localhost:3000",
-        "test": "http://localhost:3000",
-        "dev": "http://localhost:3000",
-        "stag": "http://localhost:3000"
+        "prod": "http://localhost:3003",
+        "test": "http://localhost:3003",
+        "dev": "http://localhost:3003",
+        "stag": "http://localhost:3003"
     },
     "state": "dev",
     "interfaces": [{
-        "key": "home",
-        "title": "主页接口",
-        "method": "GET",
-        "path": "/"
-    }, {
         "key": "config",
         "title": "获取CONFIG信息",
         "method": "GET",
         "path": "/config"
     }, {
-        "key": "test",
-        "title": "获取测试数据",
-        "method": "GET",
-        "path": "/test"
-    }, {
-        "key": "test-server",
-        "title": "获取测试数据",
-        "method": "GET",
-        "path": "/test/server"
+        "key": "combination",
+        "title": "获取房源ID并插入一条预定信息",
+        "method": "POST",
+        "path": "/combination"
     }, {
         "key": "login",
         "title": "测试登陆，返回数据",
